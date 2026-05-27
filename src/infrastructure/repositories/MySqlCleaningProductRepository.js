@@ -9,16 +9,14 @@ class MySqlCleaningProductRepository extends ProductRepository {
 
   async findByCategory(category) {
     const [rows] = await this.pool.execute(
-      `SELECT id, name, category
-       FROM cleaning_products
-       WHERE category = ? AND active = 1
+      `SELECT name
+       FROM products
+       WHERE category = ?
        ORDER BY id`,
       [category]
     );
 
-    return rows.map(
-      (row) => new Product(row.id, row.name, row.category)
-    );
+    return rows.map((row) => new Product(undefined, row.name, category));
   }
 }
 
